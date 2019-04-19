@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import NewComment from './NewComment';
+import Nav from './Nav'
+import { Post } from './Post';
 
 class App extends Component {
 
   render() {
     return (
       <div>
-         <h3>My project</h3> 
-          <NewComment/>
+        <Nav />
+        <div className='container'>
+          <Post />
+          </div>
       </div>
     );
   }
