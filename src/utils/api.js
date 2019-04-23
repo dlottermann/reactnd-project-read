@@ -32,15 +32,16 @@ export const getPost = post =>
     .then(res => res.json())
     .then(data => data);
 
-export const setPost = post =>
-  fetch(`${api}/posts`, {
+export const setPost = (post) => 
+   fetch(`${api}/posts`, {
     method: "POST",
     headers: {
       ...headers,
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      'Accept': 'application/json',
     },
-    body: JSON.stringify({ post })
-  }).then(res => res.json());
+    body: JSON.stringify( post )
+  }).then(res => res.json() ); 
 
 export const setVotePost = (postId, option) =>
   fetch(`${api}/posts/${postId}`, {
@@ -82,7 +83,7 @@ export const getComment = commentId =>
     res.json().then(data => data)
   );
 
-export const addComment = comment => {
+export const setComment = comment => {
   return fetch(`${api}/comments/`, {
     method: "POST",
     headers: {

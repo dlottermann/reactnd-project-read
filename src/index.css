@@ -44,20 +44,34 @@ p {
   z-index: 1;
 }
 
-/* Links inside the navbar */
-.navbar .nav-item {
+.navbar > ul {
+  list-style: none;
+}
+
+.nav-item {
   float: right;
   display: block;
   color: #f2f2f2;
   text-align: center;
-  padding: 14px 16px;
+  padding-top: 8px;
   text-decoration: none;
 }
 
+.nav-item a{
+  float: right;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+
 /* Change background on mouse-over */
-.navbar .nav-item:hover {
+.navbar .nav-item:hover  a{
   background: #efefef;
-  color: black;
+  padding: 8px 16px;
+  color: #000;
 }
 
 .container {
@@ -251,4 +265,22 @@ p {
   padding: 0.5rem;
   margin-bottom: 0.51rem;
   display: inline-block;
+}
+
+.read-more{
+  font-size: 0.7rem;
+  color: gray;
+}
+
+.edit-post {
+  font-size: 0.7rem;
+  margin-left: 0.5rem;
+  color: #f26000;
+}
+
+.vote-post {
+  float: right;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-right: -5rem;
 }

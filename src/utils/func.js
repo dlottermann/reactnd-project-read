@@ -1,6 +1,8 @@
-export const sortByScore = (a, b) => {
-  return a.voteScore - b.voteScore;
-};
-export const sortByTimestamp = (a, b) => {
-  return a.timestamp - b.timestamp;
-};
+export const sortByScore = (a, b) => a.voteScore - b.voteScore
+
+export const sortByTimestamp = (a, b) => a.timestamp - b.timestamp
+
+export const generateUID = () =>
+    Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+
+export const generateDateTime = () => Date.now()
