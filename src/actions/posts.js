@@ -1,5 +1,5 @@
 import { showLoading, hideLoading } from "react-redux-loading";
-import { setPost, setVotePost } from "../utils/api";
+import { setPost, setVotePost, updatePost, deletePost } from "../utils/api";
 
 export const RECEIVE_POSTS = "RECEIVE_POSTS";
 export const GET_POST = "GET_POST";
@@ -45,7 +45,7 @@ export function editPost(id, post) {
   };
 }
 
-export function deletePost(id) {
+export function delPost(id) {
   return {
     type: DELETE_POST,
     id
@@ -70,3 +70,22 @@ export const handleSaveVote = (postId, option) => {
       .then(() => dispatch(hideLoading()));
   }
 }
+
+export const handleEditPost = (postId,post) => {
+  return dispatch => {
+    dispatch(showLoading());
+    return updatePost(postId,post)
+      .then(post => dispatch(editPost(postId,post)))
+      .then(() => dispatch(hideLoading()));
+  };
+};
+
+
+export const handleDeletePost = (postId) => {
+  return dispatch => {
+    dispatch(showLoading());
+    return deletePost(postId)
+      .then(() => dispatch(delPost(postId)))
+      .then(() => dispatch(hideLoading()));
+  };
+};

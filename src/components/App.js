@@ -7,6 +7,7 @@ import Dashboard from "./Dashboard";
 import PostPage  from "./PostPage";
 import NewPost from "./NewPost";
 import LoadingBar from 'react-redux-loading'
+import NewComment from './NewComment';
 
 class App extends Component {
   componentDidMount() {
@@ -27,6 +28,8 @@ class App extends Component {
                 <Route path="/" exact component={Dashboard} />
                 <Route path="/posts/:id" component={PostPage} />
                 <Route path="/new" component={NewPost} />
+                <Route path="/posts/edit/:id" component={NewPost} />
+                <Route path="/comments/edit/:id" component={NewComment} />
               </div>
             )}
           </div>

@@ -1,5 +1,5 @@
 import { showLoading, hideLoading } from "react-redux-loading";
-import { setComment, getComments, deleteComment } from "../utils/api";
+import { setComment, getComments, deleteComment, setVoteComment, updateComment } from "../utils/api";
 
 export const RECEIVE_POSTS_COMMENT = 'RECEIVE_POSTS_COMMENT'
 export const ADD_COMMENT = 'ADD_COMMENT'
@@ -71,4 +71,24 @@ export const handleDeleteComment = commentId => {
       .then(comment => dispatch(delComment(comment.id)))
       .then(() => dispatch(hideLoading()));
   };
+}
+
+export const handleEditComment = (commentId, comment) => {
+  console.log(commentId)
+  return dispatch => {
+    dispatch(showLoading());
+    return updateComment(commentId, comment)
+      .then(comment => dispatch(editComment(commentId, comment)))
+      .then(() => dispatch(hideLoading()));
+  };
+};
+
+
+export const handleSaveVoteComment = (commentId, option) => {
+  return dispatch => {
+    dispatch(showLoading());
+    return setVoteComment(commentId,option)
+      .then(() => dispatch(voteComment(commentId,option)))
+      .then(() => dispatch(hideLoading()));
+  }
 }

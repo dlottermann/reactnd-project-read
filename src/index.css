@@ -26,10 +26,24 @@ p {
 .button {
   background-color: #8c65b3;
   padding: 0.5rem 2rem;
+  margin: -2.3rem 1rem;
 }
 
 .button:hover {
   background-color: #6f5499;
+  box-shadow: 0px 4px 8px rgba(46, 41, 51, 0.08),
+    0px 8px 16px rgba(71, 63, 79, 0.16);
+}
+
+
+.button-delete {
+  background-color: #ff3322;
+  float: right;
+  margin: -2rem 1rem;
+}
+
+.button-delete:hover {
+  background-color: #ff2233;
   box-shadow: 0px 4px 8px rgba(46, 41, 51, 0.08),
     0px 8px 16px rgba(71, 63, 79, 0.16);
 }
@@ -169,6 +183,15 @@ p {
   margin-top: -1rem;
 }
 
+.points-comment {
+  float: right;
+  font-size: 0.8rem;
+  color: #ffd700;
+  font-weight: 520;
+  margin-right: 1rem;
+  margin-top: 0.6rem;
+}
+
 .author-post {
   font-size: 0.7rem;
   display: inline-block;
@@ -283,4 +306,12 @@ p {
   font-size: 1.1rem;
   font-weight: 500;
   margin-right: -5rem;
+}
+
+
+.vote-comment {
+  float: right;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-right: 0.5rem;
 }

@@ -1,13 +1,35 @@
 import React, { Component } from "react";
 import { Container, Col, Form, FormGroup, Input, Button } from "reactstrap";
 import { connect } from "react-redux";
-import { handleSaveComment } from "../actions/comments";
+import {
+  handleSaveComment,
+  handleEditComment,
+  handleDeletePost
+} from "../actions/comments";
 import { generateUID, generateDateTime } from "../utils/func";
+import { getComment } from "../utils/api";
+
 
 class NewComment extends Component {
   state = {
     author: "",
     body: ""
+  };
+
+  updateState = comment => {
+    this.setState(prevState => ({
+      ...prevState,
+      author: comment.author,
+      body: comment.body
+    }));
+  };
+
+  componentDidMount = () => {
+    const { inEditMode, id, handleGetComment } = this.props;
+
+    if (inEditMode) {
+      handleGetComment(id).then(comment => this.updateState(comment));
+    }
   };
 
   handleChange = e => {
@@ -18,20 +40,33 @@ class NewComment extends Component {
     e.preventDefault();
 
     const { author, body } = this.state;
-    const { dispatch, id } = this.props;
+    const { id, inEditMode, handleSaveComment, handleEditComment } = this.props;
 
     let newComment = {
       parentId: id,
       body,
-      id: generateUID(),
       author,
-      timestamp: generateDateTime()
     };
 
-    dispatch(handleSaveComment(newComment));
+    if(inEditMode){
+      console.log(id)
+      handleEditComment(id,newComment);
+
+    }else{
+
+      newComment= {
+        ...newComment,
+        id: generateUID(),
+        timestamp: generateDateTime()
+      }
+      handleSaveComment(newComment);
+    }
+
+
+   
     this.setState(() => ({
-      author:'',
-      body: ''
+      author: "",
+      body: ""
     }));
   }
 
@@ -73,10 +108,23 @@ class NewComment extends Component {
   }
 }
 
-function mapStateToProps(state, { id }) {
+function mapStateToProps(state, { id, match }) {
   return {
-    id
+    inEditMode: match ? match.path.includes("edit") : false,
+    id: match ? match.params.id : id
   };
 }
 
-export default connect(mapStateToProps)(NewComment);
+function mapDispatchToProps(dispatch) {
+  return {
+    handleGetComment: id => getComment(id),
+    handleSaveComment: newComment => dispatch(handleSaveComment(newComment)),
+    handleEditComment: (id, comment) => dispatch(handleEditComment(id, comment)),
+   /* handleDeletePost: id => dispatch(handleDeletePost(id)) */
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NewComment);

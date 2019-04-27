@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import { generateUID, generateDateTime } from "../utils/func";
-import { handleSavePost } from "../actions/posts";
-
+import {
+  handleSavePost,
+  handleEditPost,
+  handleDeletePost
+} from "../actions/posts";
 import {
   Container,
   Col,
@@ -13,6 +16,7 @@ import {
   Input,
   Button
 } from "reactstrap";
+import { getPost } from "../utils/api";
 
 class NewPost extends Component {
   state = {
@@ -23,6 +27,24 @@ class NewPost extends Component {
     toHome: false
   };
 
+  updateState = post => {
+    this.setState(prevState => ({
+      ...prevState,
+      title: post.title,
+      author: post.author,
+      body: post.body,
+      category: post.category
+    }));
+  };
+
+  componentDidMount = () => {
+    const { inEditMode, id, handleGetPost } = this.props;
+
+    if (inEditMode) {
+      handleGetPost(id).then(post => this.updateState(post));
+    }
+  };
+
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
@@ -30,36 +52,58 @@ class NewPost extends Component {
   submitForm(e) {
     e.preventDefault();
     const { title, author, body, category } = this.state;
-    const { inEditMode, editPost, id, dispatch, categories } = this.props;
+    const {
+      inEditMode,
+      handleEditPost,
+      id,
+      categories,
+      handleSavePost
+    } = this.props;
 
     let newPost = {
       title,
       body,
       author,
-      category: category === '' ? categories[0].name : category
+      category: category === "" ? categories[0].name : category
     };
 
     if (inEditMode) {
-      editPost(id, newPost).then(() => this.goBack(true));
+      handleEditPost(id, newPost).then(
+        this.setState(prevState => ({
+          ...prevState,
+          toHome: true
+        }))
+      );
     } else {
       newPost = {
         ...newPost,
         id: generateUID(),
         timestamp: generateDateTime()
       };
-      dispatch(handleSavePost(newPost))
+      handleSavePost(newPost);
       this.setState(() => ({
-          title: "",
-          body: "",
-          author: "",
-          toHome: id ? false : true
-        }))
-      
+        title: "",
+        body: "",
+        author: "",
+        toHome: id ? false : true
+      }));
     }
   }
 
+  handleDelete = e => {
+    const { handleDeletePost, id } = this.props;
+    e.preventDefault();
+    handleDeletePost(id).then(
+      this.setState(prevState => ({
+        ...prevState,
+        toHome: true
+      }))
+    );
+  };
+
   render() {
     const { title, body, author, category, toHome } = this.state;
+    const { inEditMode } = this.props;
 
     if (toHome === true) {
       return <Redirect to="/" />;
@@ -76,7 +120,7 @@ class NewPost extends Component {
                 type="text"
                 name="author"
                 id="autor"
-                vale={author}
+                value={author}
                 onChange={this.handleChange}
               />
             </FormGroup>
@@ -88,7 +132,7 @@ class NewPost extends Component {
                 type="text"
                 name="title"
                 id="title"
-                vale={title}
+                value={title}
                 onChange={this.handleChange}
               />
             </FormGroup>
@@ -123,6 +167,11 @@ class NewPost extends Component {
           </Col>
           <Button className="button">Save</Button>
         </Form>
+        {inEditMode && (
+          <Button onClick={e => this.handleDelete(e)} className="button-delete">
+            Delete
+          </Button>
+        )}
       </Container>
     );
   }
@@ -136,4 +185,18 @@ function mapStateToProps({ categories }, { match }) {
   };
 }
 
-export default connect(mapStateToProps)(NewPost);
+function mapDispatchToProps(dispatch) {
+  return {
+    handleGetPost: id => getPost(id),
+    handleSavePost: newPost => dispatch(handleSavePost(newPost)),
+    handleEditPost: (id, post) => dispatch(handleEditPost(id, post)),
+    handleDeletePost: id => dispatch(handleDeletePost(id))
+  };
+}
+
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(NewPost)
+);

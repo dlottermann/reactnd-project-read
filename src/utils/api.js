@@ -53,12 +53,13 @@ export const setVotePost = (postId, option) =>
     body: JSON.stringify({ option })
   }).then(res => res.json());
 
-export const editPost = (post, postId) => {
+export const updatePost = (postId, post) => {
   return fetch(`${api}/posts/${postId}`, {
     method: "PUT",
     headers: {
       ...headers,
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      'Accept': 'application/json',
     },
     body: JSON.stringify(post)
   }).then(data => data.json());
@@ -78,10 +79,11 @@ export const getComments = postId =>
 
 /* ----------COMMENTS-------------  */
 
-export const getComment = commentId =>
-  fetch(`${api}/comments/${commentId}`, { headers }).then(res =>
-    res.json().then(data => data)
-  );
+export const getComment = commentId => 
+ fetch(`${api}/comments/${commentId}`, { headers })
+   .then(res => res.json())
+   .then(data => data);
+
 
 export const setComment = comment => {
   return fetch(`${api}/comments/`, {
@@ -94,12 +96,14 @@ export const setComment = comment => {
   }).then(response => response.json());
 };
 
-export const editComment = (comment, commentId) => {
+export const updateComment = (commentId, comment) => {
+  console.log(comment)
   return fetch(`${api}/comments/${commentId}`, {
     method: "PUT",
     headers: {
       ...headers,
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      'Accept': 'application/json',
     },
     body: JSON.stringify(comment)
   }).then(data => data.json());
