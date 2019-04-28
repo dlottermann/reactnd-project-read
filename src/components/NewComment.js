@@ -77,13 +77,13 @@ class NewComment extends Component {
     const { inEditMode } = this.props;
 
     if (toPrevious) {
-      return <Redirect to={`/posts/${parentId}`} />;
+      return <Redirect to={`/post/${parentId}`} />;
     }
 
     return (
       <Container className="main-comment">
         <span className="title-h2">
-          {inEditMode ? `Edit your comment` : `Add your comment:`}{" "}
+          {inEditMode ? `Edit your comment` : `Add your comment:`}
         </span>
         <Form className="form" onSubmit={e => this.submitForm(e)}>
           <Col>

@@ -86,7 +86,7 @@ class Comments extends Component {
                   </div>
 
                   <div className="author-name">
-                    <TiUserOutline /> {comment.author} commented on{" "}
+                    <TiUserOutline /> {comment.author} commented on
                     {moment(comment.timestamp).format("MMM Do YYYY")}
                     <Link className="edit-post" to={`/comments/edit/${comment.id}`}>
                       Edit <TiPen />

@@ -12,6 +12,7 @@ import { Link, withRouter } from "react-router-dom";
 import { handleSaveVote } from "../actions/posts";
 
 class Post extends Component {
+  
   handleSaveVote = (e, option) => {
     const { saveVote, post } = this.props;
     e.preventDefault();
@@ -59,7 +60,7 @@ class Post extends Component {
           onClick={e => this.handleSaveVote(e, "downVote")}
         />
       </div>
-        <Link to={`/posts/${id}`}>
+        <Link to={`/post/${id}`}>
           <h2>{title}</h2>
           <p>
             {`${body.substring(0, 100)}`}
@@ -69,8 +70,8 @@ class Post extends Component {
         </Link>
         <div>
           <span className="author-post">
-            <TiUserOutline /> Posted by {author} in <Link to={`/posts/${category}`}>{category}</Link>
-            <Link className="edit-post" to={`/posts/edit/${id}`}>
+            <TiUserOutline />{` Posted by ${author} in `}<Link to={`/posts/${category}`}>{category}</Link>
+            <Link className="edit-post" to={`/edit/${id}`}>
               Edit <TiPen />
             </Link>
           </span>

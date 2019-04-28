@@ -30,22 +30,38 @@ class Dashboard extends Component {
     }));
   };
 
+
+ isValidCategory = p =>{
+   const { categories } = this.props
+  
+  let path = p.substr(p.lastIndexOf('/') + 1)
+
+  let t = Object.values(categories).some(c => c.path === path )
+
+   return p === '/' 
+   ? true 
+   : t
+   ? t
+   : false
+
+ } 
+
+
   render() {
     const postsList = this.handleOrderPosts();
-    console.log(window.location.pathname)
     return (
       <Fragment>
         <div className="container">
-          <span className="order">
-            Order by:{" "}
+         { this.isValidCategory(window.location.pathname) && ( <span className="order">
+            Order by:
             <Link
               className="order-item"
               onClick={() => this.setOrder(true)}
               to={window.location.pathname}
             >
               Time
-            </Link>{" "}
-            |{" "}
+            </Link>
+            |
             <Link
               className="order-item"
               onClick={() => this.setOrder(false)}
@@ -53,7 +69,7 @@ class Dashboard extends Component {
             >
               Vote
             </Link>
-          </span>
+          </span>) }
 
           {postsList.map(post => (
             <Post key={post.id} post={post} />
@@ -64,9 +80,10 @@ class Dashboard extends Component {
   }
 }
 
-function mapStateToProps({ posts }, { match }) {
+function mapStateToProps({ posts, categories }, { match }) {
   return {
     posts,
+    categories,
     category: match ? match.params.category : undefined
   };
 }

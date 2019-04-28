@@ -4,7 +4,7 @@ import {
   DELETE_COMMENT,
   VOTE_COMMENT,
   EDIT_COMMENT
-} from "../actions/comments";
+} from "../actions/comments"
 
 const comments = (state = {}, action) => {
   switch (action.type) {
@@ -12,31 +12,35 @@ const comments = (state = {}, action) => {
       return {
         ...state,
         ...action.comments
-      };
+      }
     case ADD_COMMENT:
       return {
         ...state,
         [action.comment.id]: action.comment
-      };
+      }
     case DELETE_COMMENT:
-      let newState = Object.values(state).filter(c => c.id !== action.id);
+      let newState = Object.values(state).filter(c => c.id !== action.id)
       return {
         ...newState
-      };
-      case EDIT_COMMENT:
-      const { author, body } = action.comment;
-      return {
-        ...state,
-        [action.id]: {
-          ...state[action.id],
-          author,
-          body,
+      }
+    case EDIT_COMMENT:
+      newState = Object.values(state).map(comment => {
+        if (comment.id !== action.id) {
+          return comment
         }
-      };
+        return {
+          ...comment,
+          author: action.author,
+          body: action.body,
+        }
+      })
+      return {
+        ...newState
+      }
     case VOTE_COMMENT:
       newState = Object.values(state).map(comment => {
         if (comment.id !== action.id) {
-          return comment;
+          return comment
         }
         return {
           ...comment,
@@ -44,14 +48,14 @@ const comments = (state = {}, action) => {
             action.option === "upVote"
               ? comment.voteScore + 1
               : comment.voteScore - 1
-        };
-      });
+        }
+      })
       return {
         ...newState
-      };
+      }
     default:
-      return state;
+      return state
   }
-};
+}
 
-export default comments;
+export default comments
