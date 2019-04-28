@@ -24,7 +24,6 @@ const comments = (state = {}, action) => {
         ...newState
       };
       case EDIT_COMMENT:
-      console.log(action)
       const { author, body } = action.comment;
       return {
         ...state,

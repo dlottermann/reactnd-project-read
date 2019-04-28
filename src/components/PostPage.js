@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from "react";
-import { TiStarOutline, TiUserOutline } from "react-icons/ti";
+import { TiStarOutline, TiUserOutline, TiPen } from "react-icons/ti";
 import { connect } from "react-redux";
-import Comments from './Comments';
-import { withRouter } from "react-router-dom";
+import Comments from "./Comments";
+import { Link, withRouter } from "react-router-dom";
 class PostPage extends Component {
   render() {
     const { post, id } = this.props;
@@ -13,7 +13,10 @@ class PostPage extends Component {
             <div className="main-post-individual">
               <span className="author-post-individual">
                 <TiUserOutline /> Author {post.author} in{" "}
-                <a href="/">{post.category}</a>
+                <Link to={`/posts/${post.category}`}>{post.category}</Link>
+                <Link className="edit-post" to={`/posts/edit/${id}`}>
+                  Edit <TiPen />
+                </Link>
               </span>
 
               <h3>{post.title}</h3>

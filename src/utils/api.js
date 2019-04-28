@@ -32,16 +32,16 @@ export const getPost = post =>
     .then(res => res.json())
     .then(data => data);
 
-export const setPost = (post) => 
-   fetch(`${api}/posts`, {
+export const setPost = post =>
+  fetch(`${api}/posts`, {
     method: "POST",
     headers: {
       ...headers,
       "Content-Type": "application/json",
-      'Accept': 'application/json',
+      Accept: "application/json"
     },
-    body: JSON.stringify( post )
-  }).then(res => res.json() ); 
+    body: JSON.stringify(post)
+  }).then(res => res.json());
 
 export const setVotePost = (postId, option) =>
   fetch(`${api}/posts/${postId}`, {
@@ -59,7 +59,7 @@ export const updatePost = (postId, post) => {
     headers: {
       ...headers,
       "Content-Type": "application/json",
-      'Accept': 'application/json',
+      Accept: "application/json"
     },
     body: JSON.stringify(post)
   }).then(data => data.json());
@@ -74,16 +74,15 @@ export const deletePost = postId => {
 
 export const getComments = postId =>
   fetch(`${api}/posts/${postId}/comments`, { headers })
-  .then(res => res.json())
-  .then(data => data);
+    .then(res => res.json())
+    .then(data => data);
 
 /* ----------COMMENTS-------------  */
 
-export const getComment = commentId => 
- fetch(`${api}/comments/${commentId}`, { headers })
-   .then(res => res.json())
-   .then(data => data);
-
+export const getComment = commentId =>
+  fetch(`${api}/comments/${commentId}`, { headers })
+    .then(res => res.json())
+    .then(data => data);
 
 export const setComment = comment => {
   return fetch(`${api}/comments/`, {
@@ -92,22 +91,20 @@ export const setComment = comment => {
       ...headers,
       "Content-Type": "application/json"
     },
-    body : JSON.stringify(comment)
+    body: JSON.stringify(comment)
   }).then(response => response.json());
 };
 
-export const updateComment = (commentId, comment) => {
-  console.log(comment)
-  return fetch(`${api}/comments/${commentId}`, {
+export const updateComment = (commentId, comment) =>
+  fetch(`${api}/comments/${commentId}`, {
     method: "PUT",
     headers: {
       ...headers,
       "Content-Type": "application/json",
-      'Accept': 'application/json',
+      Accept: "application/json"
     },
     body: JSON.stringify(comment)
   }).then(data => data.json());
-};
 
 export const deleteComment = commentId => {
   return fetch(`${api}/comments/${commentId}`, {
@@ -123,6 +120,6 @@ export const setVoteComment = (commentId, option) => {
       ...headers,
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({option})
+    body: JSON.stringify({ option })
   }).then(data => data.json());
 };

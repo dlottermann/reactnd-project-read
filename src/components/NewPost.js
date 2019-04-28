@@ -105,7 +105,7 @@ class NewPost extends Component {
     const { title, body, author, category, toHome } = this.state;
     const { inEditMode } = this.props;
 
-    if (toHome === true) {
+    if (toHome) {
       return <Redirect to="/" />;
     }
 

@@ -3,24 +3,26 @@ import { Container, Col, Form, FormGroup, Input, Button } from "reactstrap";
 import { connect } from "react-redux";
 import {
   handleSaveComment,
-  handleEditComment,
-  handleDeletePost
+  handleEditComment
 } from "../actions/comments";
 import { generateUID, generateDateTime } from "../utils/func";
 import { getComment } from "../utils/api";
-
+import { Redirect, withRouter } from "react-router-dom";
 
 class NewComment extends Component {
   state = {
     author: "",
-    body: ""
+    body: "",
+    parentId: null,
+    toPrevious: false
   };
 
   updateState = comment => {
     this.setState(prevState => ({
       ...prevState,
       author: comment.author,
-      body: comment.body
+      body: comment.body,
+      parentId: comment.parentId
     }));
   };
 
@@ -43,37 +45,46 @@ class NewComment extends Component {
     const { id, inEditMode, handleSaveComment, handleEditComment } = this.props;
 
     let newComment = {
-      parentId: id,
       body,
-      author,
+      author
     };
-
-    if(inEditMode){
-      console.log(id)
-      handleEditComment(id,newComment);
-
-    }else{
-
-      newComment= {
+    if (inEditMode) {
+      handleEditComment(id, newComment).then(
+        this.setState(() => ({
+          author: "",
+          body: "",
+          toPrevious: true
+        }))
+      );
+    } else {
+      newComment = {
         ...newComment,
+        parentId: id,
         id: generateUID(),
         timestamp: generateDateTime()
-      }
-      handleSaveComment(newComment);
+      };
+      handleSaveComment(newComment).then(
+        this.setState(() => ({
+          author: "",
+          body: ""
+        }))
+      );
     }
-
-
-   
-    this.setState(() => ({
-      author: "",
-      body: ""
-    }));
   }
 
   render() {
+    const { author, body, parentId, toPrevious } = this.state;
+    const { inEditMode } = this.props;
+
+    if (toPrevious) {
+      return <Redirect to={`/posts/${parentId}`} />;
+    }
+
     return (
       <Container className="main-comment">
-        <span className="title-h2">Add your comment:</span>
+        <span className="title-h2">
+          {inEditMode ? `Edit your comment` : `Add your comment:`}{" "}
+        </span>
         <Form className="form" onSubmit={e => this.submitForm(e)}>
           <Col>
             <FormGroup>
@@ -82,7 +93,7 @@ class NewComment extends Component {
                 type="text"
                 name="author"
                 id="author"
-                value={this.state.author}
+                value={author}
                 onChange={this.handleChange}
               />
             </FormGroup>
@@ -94,7 +105,7 @@ class NewComment extends Component {
                 type="textarea"
                 name="body"
                 id="body"
-                value={this.state.body}
+                value={body}
                 onChange={this.handleChange}
               />
             </FormGroup>
@@ -119,12 +130,14 @@ function mapDispatchToProps(dispatch) {
   return {
     handleGetComment: id => getComment(id),
     handleSaveComment: newComment => dispatch(handleSaveComment(newComment)),
-    handleEditComment: (id, comment) => dispatch(handleEditComment(id, comment)),
-   /* handleDeletePost: id => dispatch(handleDeletePost(id)) */
+    handleEditComment: (id, comment) => dispatch(handleEditComment(id, comment))
+    /* handleDeletePost: id => dispatch(handleDeletePost(id)) */
   };
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NewComment);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(NewComment)
+);

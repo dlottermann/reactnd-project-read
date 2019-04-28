@@ -20,6 +20,8 @@ class Post extends Component {
 
   render() {
     const { post } = this.props;
+
+
     if (post === null) {
       return <p>This Post doesn't exist</p>;
     }
@@ -44,7 +46,7 @@ class Post extends Component {
 
     return (
       <div className="main-post">
-        <div className="points-post">
+       <div className="points-post">
           <TiStarOutline /> {voteScore} points
         </div>
         <div className="vote-post">
@@ -67,7 +69,7 @@ class Post extends Component {
         </Link>
         <div>
           <span className="author-post">
-            <TiUserOutline /> Posted by {author} in <a href="/">{category}</a>
+            <TiUserOutline /> Posted by {author} in <Link to={`/posts/${category}`}>{category}</Link>
             <Link className="edit-post" to={`/posts/edit/${id}`}>
               Edit <TiPen />
             </Link>
@@ -81,8 +83,7 @@ class Post extends Component {
   }
 }
 
-function mapStateToProps({ posts }, { id }) {
-  const post = posts[id];
+function mapStateToProps({ posts }, { post }) {
   return {
     post
   };

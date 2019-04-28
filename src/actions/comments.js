@@ -74,7 +74,6 @@ export const handleDeleteComment = commentId => {
 }
 
 export const handleEditComment = (commentId, comment) => {
-  console.log(commentId)
   return dispatch => {
     dispatch(showLoading());
     return updateComment(commentId, comment)

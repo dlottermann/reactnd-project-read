@@ -1,24 +1,73 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import Post from "./Post";
+import { Link } from "react-router-dom";
 
 class Dashboard extends Component {
+  state = {
+    sortBy: true
+  };
+
+  handleOrderPosts = () => {
+    const { posts, category } = this.props;
+    const { sortBy } = this.state;
+
+    let postsList = Object.values(posts);
+
+    if (category !== undefined) {
+      postsList = postsList.filter(post => post.category === category);
+    }
+
+    return sortBy
+      ? postsList.sort((a, b) => b.timestamp - a.timestamp)
+      : postsList.sort((a, b) => b.voteScore - a.voteScore);
+  };
+
+  setOrder = order => {
+    this.setState(prevState => ({
+      ...prevState,
+      sortBy: order
+    }));
+  };
+
   render() {
+    const postsList = this.handleOrderPosts();
+    console.log(window.location.pathname)
     return (
-      <div className="container">
-        {this.props.posts.map(id => (
-          <Post key={id} id={id} />
-        ))}
-      </div>
+      <Fragment>
+        <div className="container">
+          <span className="order">
+            Order by:{" "}
+            <Link
+              className="order-item"
+              onClick={() => this.setOrder(true)}
+              to={window.location.pathname}
+            >
+              Time
+            </Link>{" "}
+            |{" "}
+            <Link
+              className="order-item"
+              onClick={() => this.setOrder(false)}
+              to={window.location.pathname}
+            >
+              Vote
+            </Link>
+          </span>
+
+          {postsList.map(post => (
+            <Post key={post.id} post={post} />
+          ))}
+        </div>
+      </Fragment>
     );
   }
 }
 
-function mapStateToProps({ posts }) {
+function mapStateToProps({ posts }, { match }) {
   return {
-    posts: Object.keys(posts).sort(
-      (a, b) => posts[b].timestamp - posts[a].timestamp
-    ),
+    posts,
+    category: match ? match.params.category : undefined
   };
 }
 

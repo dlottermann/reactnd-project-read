@@ -14,7 +14,8 @@ import {
   TiThumbsDown,
   TiThumbsUp,
   TiPen,
-  TiUserOutline
+  TiUserOutline,
+  TiTrash
 } from "react-icons/ti";
 
 class Comments extends Component {
@@ -34,20 +35,14 @@ class Comments extends Component {
     }
   };
 
-  deleteComment = e => {
-    e.preventDefault();
-    const { handleDelete } = this.props;
-    handleDelete(e.target.value);
-  };
-
   handleSaveVote = (commentId, option) => {
     const { saveVote } = this.props;
     saveVote(commentId, option);
   };
 
   render() {
-    const { postComments, id } = this.props;
-
+    const { postComments, handleDelete, id } = this.props;
+    
     const pointerUp = {
       cursor: "pointer",
       color: "blue",
@@ -96,14 +91,13 @@ class Comments extends Component {
                     <Link className="edit-post" to={`/comments/edit/${comment.id}`}>
                       Edit <TiPen />
                     </Link>
+                    <Link className="delete-post" to={window.location.pathname} onClick={ () => handleDelete(comment.id) } >
+                      Delete <TiTrash />
+                    </Link>
                   </div>
 
                   <p>{comment.body}</p>
-                  <div>
-                    <button onClick={this.deleteComment} value={comment.id}>
-                      Delete Comment
-                    </button>
-                  </div>
+
                 </div>
               ))}
         </div>
