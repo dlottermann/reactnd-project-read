@@ -130,8 +130,7 @@ function mapDispatchToProps(dispatch) {
   return {
     handleGetComment: id => getComment(id),
     handleSaveComment: newComment => dispatch(handleSaveComment(newComment)),
-    handleEditComment: (id, comment) => dispatch(handleEditComment(id, comment))
-    /* handleDeletePost: id => dispatch(handleDeletePost(id)) */
+    handleEditComment: (id, comment) => dispatch(handleEditComment(id, comment)),
   };
 }
 
