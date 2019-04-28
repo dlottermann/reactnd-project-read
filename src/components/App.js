@@ -17,7 +17,7 @@ class App extends Component {
 
   render() {
 
-    const { posts, categories, comments } = this.props
+    const { posts } = this.props
 
     return (
       <Fragment>

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect, withRouter } from "react-router-dom";
-import { generateUID, generateDateTime } from "../utils/func";
+import { generateUID, generateDateTime,capitalizeFirstLetter } from "../utils/func";
 import {
   handleSavePost,
   handleEditPost,
@@ -103,7 +103,7 @@ class NewPost extends Component {
 
   render() {
     const { title, body, author, category, toHome } = this.state;
-    const { inEditMode } = this.props;
+    const { inEditMode, categories } = this.props;
 
     if (toHome) {
       return <Redirect to="/" />;
@@ -147,9 +147,13 @@ class NewPost extends Component {
                 name="category"
                 id="category"
               >
-                <option>react</option>
-                <option>redux</option>
-                <option>udacity</option>
+              {!Object.keys(categories).length
+                ? null
+                : Object.values(categories).map(category => (
+                    <option key={ category.path } className="nav-item">
+                       { capitalizeFirstLetter(category.name) }
+                    </option>
+                  ))}
               </Input>
             </FormGroup>
           </Col>

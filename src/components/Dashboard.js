@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import Post from "./Post";
 import { Link } from "react-router-dom";
+import {capitalizeFirstLetter } from '../utils/func'
 
 class Dashboard extends Component {
   state = {
@@ -49,6 +50,7 @@ class Dashboard extends Component {
 
   render() {
     const postsList = this.handleOrderPosts();
+    const { category } = this.props
     return (
       <Fragment>
         <div className="container">
@@ -70,8 +72,9 @@ class Dashboard extends Component {
               Vote
             </Link>
           </span>) }
-
-          {postsList.map(post => (
+          { postsList.length <= 0
+            ? <p>{`There are no posts in category: ${capitalizeFirstLetter(category||'')}`}</p>
+            :postsList.map(post => (
             <Post key={post.id} post={post} />
           ))}
         </div>

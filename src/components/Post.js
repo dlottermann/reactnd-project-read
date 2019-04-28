@@ -6,10 +6,11 @@ import {
   TiMessages,
   TiThumbsDown,
   TiThumbsUp,
-  TiPen
+  TiPen,
+  TiTrash
 } from "react-icons/ti";
 import { Link, withRouter } from "react-router-dom";
-import { handleSaveVote } from "../actions/posts";
+import { handleSaveVote, handleDeletePost } from "../actions/posts";
 
 class Post extends Component {
   
@@ -20,7 +21,7 @@ class Post extends Component {
   }
 
   render() {
-    const { post } = this.props;
+    const { post, handleDeletePost } = this.props;
 
 
     if (post === null) {
@@ -74,6 +75,9 @@ class Post extends Component {
             <Link className="edit-post" to={`/edit/${id}`}>
               Edit <TiPen />
             </Link>
+            <Link className="delete-post" to={window.location.pathname} onClick={ () => handleDeletePost(id) } >
+                      Delete <TiTrash />
+            </Link>
           </span>
           <span className="comments-post">
             {commentCount} Comments <TiMessages />
@@ -92,7 +96,8 @@ function mapStateToProps({ posts }, { post }) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    saveVote: (id, option) => dispatch(handleSaveVote(id, option))
+    saveVote: (id, option) => dispatch(handleSaveVote(id, option)),
+    handleDeletePost: id => dispatch(handleDeletePost(id))
   };
 }
 

@@ -4,12 +4,13 @@ import {
   TiUserOutline,
   TiPen,
   TiThumbsUp,
-  TiThumbsDown
+  TiThumbsDown,
+  TiTrash
 } from "react-icons/ti";
 import { connect } from "react-redux";
 import Comments from "./Comments";
 import { Link, withRouter } from "react-router-dom";
-import { handleSaveVote } from "../actions/posts";
+import { handleSaveVote, handleDeletePost } from "../actions/posts";
 
 class PostPage extends Component {
 
@@ -20,7 +21,7 @@ class PostPage extends Component {
   }
 
   render() {
-    const { post, id } = this.props;
+    const { post, id, handleDeletePost } = this.props;
 
     const pointerUp = {
       cursor: "pointer",
@@ -49,6 +50,9 @@ class PostPage extends Component {
                 <Link className="edit-post" to={`/edit/${id}`}>
                   Edit <TiPen />
                 </Link>
+                <Link className="delete-post" to={window.location.pathname} onClick={ () => handleDeletePost(id) } >
+                      Delete <TiTrash />
+                    </Link>
               </span>
 
               <h3>{post.title}</h3>
@@ -87,7 +91,8 @@ function mapStateToProps({ posts }, { match }) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    saveVote: (id, option) => dispatch(handleSaveVote(id, option))
+    saveVote: (id, option) => dispatch(handleSaveVote(id, option)),
+    handleDeletePost: id => dispatch(handleDeletePost(id))
   };
 }
 

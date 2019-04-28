@@ -40,16 +40,22 @@ const posts = (state = {}, action) => {
       };
     case EDIT_POST:
       const { author, title, body, category } = action.post;
-      return {
-        ...state,
-        [action.id]: {
-          ...state[action.id],
+      newState = Object.values(state).map(post => {
+        if (post.id !== action.id) {
+          return post;
+        }
+        return {
+          ...post,
           author,
           title,
           body,
           category
-        }
+        };
+      });
+      return {
+        ...newState
       };
+
     case DELETE_POST:
       newState = Object.values(state).filter(c => c.id !== action.id);
       return {
