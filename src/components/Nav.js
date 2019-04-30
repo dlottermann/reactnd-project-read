@@ -6,6 +6,7 @@ import { capitalizeFirstLetter } from "../utils/func";
 
 const Nav = props => {
   const { categories } = props;
+
   return (
     <nav className="navbar">
       <ul>
@@ -18,7 +19,7 @@ const Nav = props => {
           ? null
           : Object.values(categories).map(category => (
               <li key={ category.path } className="nav-item">
-                <NavLink to={ `/posts/${category.path}` } activeClassName="active">
+                <NavLink to={ `/${category.path}` } activeClassName="active">
                  { capitalizeFirstLetter(category.name) }
                 </NavLink>
               </li>
@@ -35,6 +36,7 @@ const Nav = props => {
 
 function mapStateToProps(state) {
   const { categories } = state;
+
   return {
     categories
   };

@@ -11,6 +11,7 @@ import { connect } from "react-redux";
 import Comments from "./Comments";
 import { Link, withRouter } from "react-router-dom";
 import { handleSaveVote, handleDeletePost } from "../actions/posts";
+import PageError from './PageError';
 
 class PostPage extends Component {
 
@@ -21,7 +22,7 @@ class PostPage extends Component {
   }
 
   render() {
-    const { post, id, handleDeletePost } = this.props;
+    const { post, id, handleDeletePost, loading } = this.props;
 
     const pointerUp = {
       cursor: "pointer",
@@ -41,20 +42,20 @@ class PostPage extends Component {
 
     return (
       <Fragment>
-        {post === undefined ? null : (
+      { post === undefined && !loading ? <PageError /> : (
           <span>
             <div className="main-post-individual">
               <span className="author-post-individual">
                 <TiUserOutline />{` Author ${post.author} in `} 
-                <Link to={`/posts/${post.category}`}>{post.category}</Link>
-                <Link className="edit-post" to={`/edit/${id}`}>
+                <Link to={`/${post.category}`}>{post.category}</Link>
+                <Link className="edit-post" to={`/${post.category}/${id}/edit`}>
                   Edit <TiPen />
                 </Link>
                 <Link className="delete-post" to={window.location.pathname} onClick={ () => handleDeletePost(id) } >
                       Delete <TiTrash />
                     </Link>
               </span>
-
+              
               <h3>{post.title}</h3>
               <p>{post.body}</p>
               <div>
@@ -84,6 +85,7 @@ function mapStateToProps({ posts }, { match }) {
   const id = match.params.id;
   const post = Object.values(posts).filter(post => post.id === id)[0];
   return {
+    loading: post,
     post,
     id
   };

@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import { withRouter, Route, Switch, Redirect } from "react-router-dom";
+import { withRouter, Route, Switch } from "react-router-dom";
 import { getInitialData } from "../actions/shared";
 import Nav from "./Nav";
 import Dashboard from "./Dashboard";
@@ -16,9 +16,6 @@ class App extends Component {
   }
 
   render() {
-
-    const { posts } = this.props
-
     return (
       <Fragment>
         <Nav />
@@ -26,20 +23,12 @@ class App extends Component {
         <div className="container">
           {this.props.loading === true ? null : (
             <Switch>
-              <Route path="/" exact component={Dashboard} />
-              <Route path='/posts/:category' component={Dashboard} />
-              <Route path="/comments/edit/:id" component={NewComment} />
-              <Route path="/new" component={NewPost} />
-
-              <Route path='/post/:id' render={
-                  ({match}) => {
-                    const post = Object.values(posts).find( post => post.id === match.params.id )
-                    return !post ? <Redirect to='/404'/> : <PostPage/> 
-                  }                
-              } />              
-              <Route exact path="/edit/:id" component={NewPost} />
-             
-
+              <Route exact path="/" component={Dashboard} />
+              <Route exact path="/comments/edit/:id" component={NewComment} />
+              <Route exact path="/new" component={NewPost} />
+              <Route exact path='/:category/:id' component={PostPage} />  
+              <Route exact path='/:category' component={Dashboard} />
+              <Route exact path="/:category/:id/edit" component={NewPost} />
               <Route component={PageError} />
             </Switch>
           )}

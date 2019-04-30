@@ -93,6 +93,7 @@ class NewComment extends Component {
                 type="text"
                 name="author"
                 id="author"
+                required
                 value={author}
                 onChange={this.handleChange}
               />
@@ -105,6 +106,7 @@ class NewComment extends Component {
                 type="textarea"
                 name="body"
                 id="body"
+                required
                 value={body}
                 onChange={this.handleChange}
               />

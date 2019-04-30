@@ -61,7 +61,7 @@ class Post extends Component {
           onClick={e => this.handleSaveVote(e, "downVote")}
         />
       </div>
-        <Link to={`/post/${id}`}>
+        <Link to={`/${category}/${id}`}>
           <h2>{title}</h2>
           <p>
             {`${body.substring(0, 100)}`}
@@ -71,8 +71,8 @@ class Post extends Component {
         </Link>
         <div>
           <span className="author-post">
-            <TiUserOutline />{` Posted by ${author} in `}<Link to={`/posts/${category}`}>{category}</Link>
-            <Link className="edit-post" to={`/edit/${id}`}>
+            <TiUserOutline />{` Posted by ${author} in `}<Link to={`/${category}`}>{category}</Link>
+            <Link className="edit-post" to={`/${category}/${id}/edit`}>
               Edit <TiPen />
             </Link>
             <Link className="delete-post" to={window.location.pathname} onClick={ () => handleDeletePost(id) } >

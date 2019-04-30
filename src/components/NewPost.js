@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect, withRouter } from "react-router-dom";
-import { generateUID, generateDateTime,capitalizeFirstLetter } from "../utils/func";
+import { generateUID, generateDateTime } from "../utils/func";
 import {
   handleSavePost,
   handleEditPost,
@@ -120,6 +120,7 @@ class NewPost extends Component {
                 type="text"
                 name="author"
                 id="autor"
+                required
                 value={author}
                 onChange={this.handleChange}
               />
@@ -132,6 +133,7 @@ class NewPost extends Component {
                 type="text"
                 name="title"
                 id="title"
+                required
                 value={title}
                 onChange={this.handleChange}
               />
@@ -146,12 +148,13 @@ class NewPost extends Component {
                 onChange={this.handleChange}
                 name="category"
                 id="category"
+                required
               >
               {!Object.keys(categories).length
                 ? null
                 : Object.values(categories).map(category => (
                     <option key={ category.path } className="nav-item">
-                       { capitalizeFirstLetter(category.name) }
+                       { category.name }
                     </option>
                   ))}
               </Input>
@@ -164,6 +167,7 @@ class NewPost extends Component {
                 type="textarea"
                 name="body"
                 id="body"
+                required
                 value={body}
                 onChange={this.handleChange}
               />
